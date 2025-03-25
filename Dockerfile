@@ -10,8 +10,7 @@
 # Be Aware! For the Jenkins CI/CD pipeline, 
 # input args are defined inside the JenkinsConstants.groovy, not here!
 
-ARG tag=2.9.1
-
+ARG tag=2.18.0
 # Base image, e.g. tensorflow/tensorflow:2.9.1
 FROM tensorflow/tensorflow:${tag}
 
@@ -30,6 +29,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         git \
         curl \
         nano \
+        psmisc \
+        libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Update python packages
@@ -41,7 +42,7 @@ RUN python3 --version && \
 # [1]: https://github.com/pypa/setuptools/issues/3301
 
 # Set LANG environment
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # Set the working directory
 WORKDIR /srv
@@ -58,7 +59,7 @@ RUN curl -O https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
 ENV RCLONE_CONFIG=/srv/.rclone/rclone.conf
 
 # Disable FLAAT authentication by default
-ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
+ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER=yes
 
 # Initialization scripts
 # deep-start can install JupyterLab or VSCode if requested
@@ -66,16 +67,29 @@ RUN git clone https://github.com/ai4os/deep-start /srv/.deep-start && \
     ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
 # Necessary for the Jupyter Lab terminal
-ENV SHELL /bin/bash
+ENV SHELL=/bin/bash
 
 # Install user app
-RUN git clone -b $branch https://github.com/ai4os-hub/eyeonwater-yolov8 && \
+RUN git clone -b $branch https://github.com/ai4os-hub/eye-on-water-yolov8 && \
     cd  eyeonwater-yolov8 && \
     pip3 install --no-cache-dir -e . && \
     cd ..
+
+COPY requirements.txt /srv/requirements.txt
+RUN pip3 install --no-cache-dir -r /srv/requirements.txt
+
+# COPY . eyeonwater_yolov8
+# RUN cd eyeonwater_yolov8 && \
+#     pip3 install --no-cache-dir -e . && \
+#     cd ..
+
+# # Copy the YOLO model directory
+# COPY eyeonwater_yolov8/models /srv/eyeonwater_yolov8/models
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
 
 # Launch deepaas
-CMD [ "deep-start", "--deepaas" ]
+# CMD [ "deep-start", "--deepaas" ]
+CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
+

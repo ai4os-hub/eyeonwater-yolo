@@ -13,20 +13,20 @@ links:
   source_code: https://github.com/ai4os-hub/eyeonwater-yolov8
   docker_image: ai4oshub/eyeonwater-yolov8
   # documentation: http://add-some-documentation.com
-  # dataset: http://add-some-url-pointing-to-your-dataset.com
+  dataset: https://zenodo.org/records/14017143
   # weights: http://add-some-weights-url.com
   # citation: http://add-some-DOI-url.com
   # base_model: http://add-some-link-to-another-model.com
-#tags:        # required property, add user-defined tags that you consider relevant
-  # - deep learning
-#tasks:       # required property, uncomment together with relevant items
+tags:        # required property, add user-defined tags that you consider relevant
+  - deep learning
+tasks:       # required property, uncomment together with relevant items
   # - Computer Vision
   # - Natural Language Processing
   # - Time Series
   # - Recommender Systems
   # - Anomaly Detection
   # - Regression
-  # - Classification
+  - Classification
   # - Clustering
   # - Dimensionality Reduction
   # - Generative Models
@@ -36,13 +36,13 @@ links:
   # - Transfer Learning
   # - Uncertainty Estimation
   # - Other
-#categories:  # required property, uncomment together with relevant items
+categories:  # required property, uncomment together with relevant items
   # - AI4 trainable
-  # - AI4 pre trained
+  - AI4 pre trained
   # - AI4 inference
   # - AI4 tools
-#libraries:   # required property, uncomment together with relevant items
-  # - TensorFlow
+libraries:   # required property, uncomment together with relevant items
+  - TensorFlow
   # - PyTorch
   # - Keras
   # - Scikit-learn
@@ -50,8 +50,8 @@ links:
   # - LightGBM
   # - CatBoost
   # - Other
-#data-type:   # optional, uncomment together with relevant items
-  # - Image
+data-type:   # optional, uncomment together with relevant items
+  - Image
   # - Text
   # - Time Series
   # - Tabular

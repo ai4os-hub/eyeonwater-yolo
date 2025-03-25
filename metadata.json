@@ -1,9 +1,9 @@
 {
     "title": "eyeonwater-yolov8",
-    "summary": "eye on water yolov8  is an application using the DEEPaaS API.",
+    "summary": "A script to train & use a YOLOv8 model that determines the Forel-Ule value of the water surface in a picture.",
     "description": [
-        "eyeonwater_yolov8 is an application using the DEEPaaS API.\n",
-        "eye on water yolov8  is an application using the DEEPaaS API."
+        "eye on water yolov8  is an application using the DEEPaaS API.\n",
+        "A script to train & use a YOLOv8 model that determines the Forel-Ule value of the water surface in a picture."
     ],
     "keywords": [
         "docker",
