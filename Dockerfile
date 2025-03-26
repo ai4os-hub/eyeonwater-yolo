@@ -71,7 +71,7 @@ ENV SHELL=/bin/bash
 
 # Install user app
 RUN git clone -b $branch https://github.com/ai4os-hub/eye-on-water-yolov8 && \
-    cd  eyeonwater-yolov8 && \
+    cd  eye-on-water-yolov8 && \
     pip3 install --no-cache-dir -e . && \
     cd ..
 
