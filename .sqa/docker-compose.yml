@@ -7,7 +7,6 @@ services:
     build:
       context: ./.sqa
     hostname: "${BUILD_TAG}"
-    working_dir: /srv
     command: >
       sh -c "git config --global --add safe.directory /srv &&
              tail -f /dev/null"
