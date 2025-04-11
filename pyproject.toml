@@ -7,10 +7,10 @@ name = "eyeonwater-yolo"
 authors = [
     { name = "Thomas Warbout", email = "thomas@maris.nl" },
 ]
-description = "eye on water yolo  is an application using the DEEPaaS API."
+description = "eyeonwater yolo is an application using the DEEPaaS API."
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "MIT" }
+license = "MIT"
 classifiers = [
     "Intended Audience :: Information Technology",
     "Intended Audience :: AI/ML/DL Researchers",
