@@ -12,7 +12,7 @@ you make to the code.
 
 import unittest
 
-import eyeonwater_yolov8.api as api
+import eyeonwater_yolo.api as api
 
 
 class TestModelMethods(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestModelMethods(unittest.TestCase):
         """
         self.assertEqual(
             self.meta["name"].lower().replace("-", "_"),
-            "eyeonwater_yolov8".lower().replace("-", "_"),
+            "eyeonwater_yolo".lower().replace("-", "_"),
         )
         self.assertEqual(
             self.meta["author"],

@@ -1,9 +1,9 @@
 {
-    "title": "eyeonwater-yolov8",
-    "summary": "A script to train & use a YOLOv8 model that determines the Forel-Ule value of the water surface in a picture.",
+    "title": "eyeonwater-yolo",
+    "summary": "A script to train & use a yolo model that determines the Forel-Ule value of the water surface in a picture.",
     "description": [
-        "eye on water yolov8  is an application using the DEEPaaS API.\n",
-        "A script to train & use a YOLOv8 model that determines the Forel-Ule value of the water surface in a picture."
+        "eye on water yolo  is an application using the DEEPaaS API.\n",
+        "A script to train & use a yolo model that determines the Forel-Ule value of the water surface in a picture."
     ],
     "keywords": [
         "docker",
@@ -13,14 +13,14 @@
     "date_creation": "2025-03-25",
     "dataset_url": "http://add-some-url-pointing-to-your-dataset.com",
     "sources": {
-		"dockerfile_repo": "https://github.com/ai4os-hub/eyeonwater-yolov8",
-		"docker_registry_repo": "ai4oshub/eyeonwater-yolov8",
-		"code": "https://github.com/ai4os-hub/eyeonwater-yolov8",
+		"dockerfile_repo": "https://github.com/ai4os-hub/eyeonwater-yolo",
+		"docker_registry_repo": "ai4oshub/eyeonwater-yolo",
+		"code": "https://github.com/ai4os-hub/eyeonwater-yolo",
 		"ai4_template": "ai4-template/2.2.0"
     },
     "continuous_integration": {
-        "build_status_badge": "https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/eyeonwater-yolov8/main",
-        "build_status_url": "https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/eyeonwater-yolov8/job/main/"
+        "build_status_badge": "https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/eyeonwater-yolo/main",
+        "build_status_url": "https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/eyeonwater-yolo/job/main/"
     },
     "tosca": [
         {

@@ -13,7 +13,7 @@ from importlib import metadata
 import yaml
 
 # Get AI model metadata from pyproject.toml
-API_NAME = "eyeonwater_yolov8"
+API_NAME = "eyeonwater_yolo"
 PACKAGE_METADATA = metadata.metadata(API_NAME)  # .json
 
 # Get ai4-metadata.yaml metadata

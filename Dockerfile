@@ -16,7 +16,7 @@ FROM tensorflow/tensorflow:${tag}
 
 LABEL maintainer='Thomas Warbout'
 LABEL version='0.0.1'
-# eye on water yolov8  is an application using the DEEPaaS API.
+# eye on water yolo  is an application using the DEEPaaS API.
 
 # What user branch to clone [!]
 ARG branch=main
@@ -70,21 +70,13 @@ RUN git clone https://github.com/ai4os/deep-start /srv/.deep-start && \
 ENV SHELL=/bin/bash
 
 # Install user app
-RUN git clone -b $branch https://github.com/ai4os-hub/eye-on-water-yolov8 && \
-    cd  eye-on-water-yolov8 && \
+RUN git clone -b $branch https://github.com/ai4os-hub/eyeonwater-yolo && \
+    cd  eyeonwater-yolo && \
     pip3 install --no-cache-dir -e . && \
     cd ..
 
-COPY requirements.txt /srv/requirements.txt
-RUN pip3 install --no-cache-dir -r /srv/requirements.txt
-
-# COPY . eyeonwater_yolov8
-# RUN cd eyeonwater_yolov8 && \
-#     pip3 install --no-cache-dir -e . && \
-#     cd ..
-
 # # Copy the YOLO model directory
-# COPY eyeonwater_yolov8/models /srv/eyeonwater_yolov8/models
+# COPY eyeonwater_yolo/models /srv/eyeonwater_yolo/models
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888

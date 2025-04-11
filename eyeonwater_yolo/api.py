@@ -40,9 +40,9 @@ from webargs import fields
 from datetime import datetime
 from ultralytics import YOLO
 from tensorboardX import SummaryWriter
-from eyeonwater_yolov8 import config
-from eyeonwater_yolov8.schema import ResponseSchema
-from eyeonwater_yolov8.misc import _catch_error, launch_tensorboard
+from eyeonwater_yolo import config
+from eyeonwater_yolo.schema import ResponseSchema
+from eyeonwater_yolo.misc import _catch_error, launch_tensorboard
 
 # set up logging
 logger = logging.getLogger(__name__)

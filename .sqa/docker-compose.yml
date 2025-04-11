@@ -2,8 +2,10 @@ version: "3.6"
 
 services:
   thisrepo-testing:
-    image: "ai4oshub/ci-images:python3.10"
     container_name: "${BUILD_TAG}"
+    working_dir: /srv
+    build:
+      context: ./.sqa
     hostname: "${BUILD_TAG}"
     working_dir: /srv
     command: >

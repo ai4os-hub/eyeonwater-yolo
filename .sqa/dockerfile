@@ -1,0 +1,11 @@
+# Docker image for CI testing of the DEEPaaS API
+# Note there is probably no gpu in the CI server
+ARG tag=python3.10
+FROM ai4oshub/ci-images:${tag}
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libgl1\
+        libglib2.0-0 \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+CMD ["sleep", "infinity"]
