@@ -14,7 +14,6 @@ from pathlib import Path
 import yaml
 
 BASE_DIR = Path(__file__).resolve().parents[1]
-print("BASE_DIR:", BASE_DIR)
 
 # Get AI model metadata from pyproject.toml
 API_NAME = "eyeonwater_yolo"
@@ -30,10 +29,11 @@ with open(_file, "r", encoding="utf-8") as stream:
     AI4_METADATA = yaml.safe_load(stream)
 
 # Project metadata
+# License is deprecated since v2.4 of metadata: in favour of License-Expression.
 PROJECT_METADATA = {
   "name": PACKAGE_METADATA["Name"],
   "description": AI4_METADATA["description"],
-  "license": PACKAGE_METADATA["License"],
+  "license": PACKAGE_METADATA["License-Expression"],
   "version":  PACKAGE_METADATA["Version"],
   "url":  PACKAGE_METADATA["Project-URL"],
 }
