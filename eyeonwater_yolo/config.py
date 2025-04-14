@@ -10,20 +10,19 @@ import logging
 import os
 from importlib import metadata
 
+from pathlib import Path
 import yaml
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+print("BASE_DIR:", BASE_DIR)
 
 # Get AI model metadata from pyproject.toml
 API_NAME = "eyeonwater_yolo"
 PACKAGE_METADATA = metadata.metadata(API_NAME)  # .json
 
-# Get ai4-metadata.yaml metadata
-CWD = os.getcwd()
-AI4_METADATA_DIR = os.getenv(f"{API_NAME.capitalize()}_AI4_METADATA_DIR")
-if AI4_METADATA_DIR is None:
-    if "ai4-metadata.yml" in os.listdir(f"{CWD}/{API_NAME}"):
-        AI4_METADATA_DIR = f"{CWD}/{API_NAME}"
-    elif "ai4-metadata.yml" in os.listdir(f"{CWD}/../{API_NAME}"):
-        AI4_METADATA_DIR = f"{CWD}/../{API_NAME}"
+# Get ai4-metadata.yaml metadata (default location: BASE_DIR)
+AI4_METADATA_DIR = os.getenv(f"{API_NAME.capitalize()}_AI4_METADATA_DIR",
+                             BASE_DIR)
 
 # Open ai4-metadata.yml
 _file = f"{AI4_METADATA_DIR}/ai4-metadata.yml"

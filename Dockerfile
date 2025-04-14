@@ -76,7 +76,7 @@ RUN git clone -b $branch https://github.com/ai4os-hub/eyeonwater-yolo && \
     cd ..
 
 # # Copy the YOLO model directory
-# COPY eyeonwater_yolo/models /srv/eyeonwater_yolo/models
+# COPY eyeonwater-yolo/models /srv/eyeonwater-yolo/models
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
@@ -84,4 +84,3 @@ EXPOSE 5000 6006 8888
 # Launch deepaas
 # CMD [ "deep-start", "--deepaas" ]
 CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
-
