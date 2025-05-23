@@ -93,12 +93,12 @@ def train(**kwargs):
         time.sleep(1.0)
         writer.add_scalar(
             "scalars/loss",
-            -math.log(epoch + 1) * (1 + random() * 0.2),
+            -math.log(epoch + 1) * (1 + random() * 0.2),   # nosec otherwise look at https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_calls.html#b311-random
             epoch,
         )
         writer.add_scalar(
             "scalars/accuracy",
-            min((1 - 1 / (epoch + 1)) * (1 + random() * 0.1), 1),
+            min((1 - 1 / (epoch + 1)) * (1 + random() * 0.1), 1),   # nosec otherwise look at https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_calls.html#b311-random
             epoch,
         )
     writer.close()
