@@ -16,7 +16,7 @@ import yaml
 BASE_DIR = Path(__file__).resolve().parents[1]
 
 # Get AI model metadata from pyproject.toml
-API_NAME = "eyeonwater_yolo"
+API_NAME = "eyeonwater-yolo"
 PACKAGE_METADATA = metadata.metadata(API_NAME)  # .json
 
 # Get ai4-metadata.yaml metadata (default location: BASE_DIR)
@@ -29,7 +29,8 @@ with open(_file, "r", encoding="utf-8") as stream:
     AI4_METADATA = yaml.safe_load(stream)
 
 # Project metadata
-# License is deprecated since v2.4 of metadata: in favour of License-Expression.
+# License is deprecated since v2.4 of metadata:
+# in favour of License-Expression.
 PROJECT_METADATA = {
   "name": PACKAGE_METADATA["Name"],
   "description": AI4_METADATA["description"],

@@ -24,20 +24,18 @@ an exemplar module [2].
 [2]: https://github.com/ai4os-hub/ai4os-demo-app
 """
 
-from pathlib import Path
-import logging
 
 import math
 import time
 import zipfile
-import logging
-import datetime
 import tempfile
-from PIL import Image
-from pathlib import Path
-from random import random
-from webargs import fields
+import logging
+import secrets
+
 from datetime import datetime
+from pathlib import Path
+from PIL import Image
+from webargs import fields
 from ultralytics import YOLO
 from tensorboardX import SummaryWriter
 from eyeonwater_yolo import config
@@ -65,7 +63,6 @@ def get_metadata():
     try:  # Call your AI model metadata() method
         logger.info("Collecting metadata from: %s", config.API_NAME)
         metadata = config.PROJECT_METADATA
-        # TODO: Add dynamic metadata collection here
         logger.debug("Package model metadata: %s", metadata)
         return metadata
     except Exception as err:
@@ -82,6 +79,7 @@ def get_train_args():
         ),
     }
 
+
 def train(**kwargs):
     """
     Dummy training. Logs random metrics in Tensorboard to mimic monitoring.
@@ -93,17 +91,18 @@ def train(**kwargs):
         time.sleep(1.0)
         writer.add_scalar(
             "scalars/loss",
-            -math.log(epoch + 1) * (1 + random() * 0.2),   # nosec otherwise look at https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_calls.html#b311-random
+            -math.log(epoch + 1) * (1 + secrets.SystemRandom() * 0.2),
             epoch,
         )
         writer.add_scalar(
             "scalars/accuracy",
-            min((1 - 1 / (epoch + 1)) * (1 + random() * 0.1), 1),   # nosec otherwise look at https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_calls.html#b311-random
+            min((1 - 1 / (epoch + 1)) * (1 + secrets.SystemRandom() * 0.1), 1),
             epoch,
         )
     writer.close()
     (logdir / "final_model.hdf5").touch()
     return {"status": "done", "final accuracy": 0.9}
+
 
 def get_predict_args():
     """
@@ -118,20 +117,22 @@ def get_predict_args():
         )
     }
 
+
 def predict(**kwargs):
     """
-    Run YOLOv8 inference on uploaded images (single, zip, or folder) and return predictions with confidence scores.
+    Run YOLOv8 inference on uploaded images (single, zip, or folder)
+    and return predictions
+    with confidence scores.
     """
     uploaded_file = kwargs.get("image")
     if not uploaded_file:
         return {"error": "No file uploaded", "status": "failed"}
-    
     try:
-        model_path = BASE_DIR / "models" / "best.pt" # TODO - select the best model
+        model_path = BASE_DIR / "models" / "best.pt"
         if not model_path.exists():
-            logging.error(f"Model file not found at {model_path}")
+            logging.error("Model file not found at %s", model_path)
             raise FileNotFoundError(f"Model file not found at {model_path}")
-        
+
         model = YOLO(model_path)
         predictions = []
 
@@ -142,7 +143,7 @@ def predict(**kwargs):
                 # Extract zip file
                 with zipfile.ZipFile(uploaded_file.filename, 'r') as zip_ref:
                     zip_ref.extractall(temp_dir_path)
-                
+
                 # Process extracted images
                 predictions.extend(process_images(temp_dir_path, model))
             elif Path(uploaded_file.filename).is_dir():
@@ -161,13 +162,29 @@ def predict(**kwargs):
             "model_used": str(model_path.name)
         }
         return response
-    
+
     except FileNotFoundError as e:
-        logging.error(f"Model file error: {str(e)}")
+        logging.error("Model file error: %s", str(e))
         return {"error": str(e), "status": "failed"}
-    except Exception as e:
-        logging.error(f"Prediction error: {str(e)}")
-        return {"error": f"Error during inference: {str(e)}", "status": "failed"}
+    except (ValueError, TypeError) as e:
+        logging.error("Invalid data error: %s", str(e))
+        return {
+            "error": f"Data validation error: {str(e)}",
+            "status": "failed"
+        }
+    except (IOError, OSError) as e:
+        logging.error("File operation error: %s", str(e))
+        return {
+            "error": f"File processing error: {str(e)}",
+            "status": "failed"
+        }
+    except RuntimeError as e:
+        logging.error("Model inference error: %s", str(e))
+        return {
+            "error": f"Error during inference: {str(e)}",
+            "status": "failed"
+        }
+
 
 def process_images(folder_path, model):
     """
@@ -180,6 +197,7 @@ def process_images(folder_path, model):
             results = model.predict(image_pil, save=False, imgsz=256)
             predictions.extend(process_results(results))
     return predictions
+
 
 def process_results(results):
     """
@@ -198,5 +216,6 @@ def process_results(results):
                 "confidence": top1_confidence
             })
     return predictions
+
 
 schema = ResponseSchema

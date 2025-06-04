@@ -10,13 +10,13 @@
 # Be Aware! For the Jenkins CI/CD pipeline, 
 # input args are defined inside the JenkinsConstants.groovy, not here!
 
-ARG tag=1.13.1-cuda11.6-cudnn8-runtime  # corresponds to yolov8
+ARG tag=1.13.1-cuda11.6-cudnn8-runtime
 
 # Base image, e.g. tensorflow/tensorflow:2.9.1
 FROM pytorch/pytorch:${tag}
 
 LABEL maintainer='Thomas Warbout'
-LABEL version='0.0.1'
+LABEL version='0.1.0'
 # eye on water yolo  is an application using the DEEPaaS API.
 
 # What user branch to clone [!]
@@ -26,12 +26,13 @@ ARG branch=main
 # - gcc is needed in Pytorch images because deepaas installation might break otherwise (see docs) (it is already installed in tensorflow images)
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y --no-install-recommends \
-        gcc \
-        git \
-        curl \
-        nano \
-        psmisc \
-        libgl1 \
+    gcc \
+    git \
+    curl \
+    nano \
+    psmisc \
+    libgl1 \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Update python packages
@@ -71,17 +72,27 @@ RUN git clone https://github.com/ai4os/deep-start /srv/.deep-start && \
 ENV SHELL=/bin/bash
 
 # Install user app
-RUN git clone -b $branch https://github.com/ai4os-hub/eyeonwater-yolo && \
-    cd  eyeonwater-yolo && \
+RUN git clone -b $branch https://github.com/ai4os-hub/eye-on-water-yolov8 eyeonwater-yolo && \
+    cd eyeonwater-yolo && \
+    # Fix the markupsafe and jinja2 versions first before installing anything else
+    pip3 install --no-cache-dir markupsafe==2.0.1 jinja2==3.1.2 && \
     pip3 install --no-cache-dir -e . && \
-    cd ..
+    pip3 install --no-cache-dir -r ./requirements.txt && \
+    pip3 install --no-cache-dir numpy==1.24.3 && \
+    cd .. && \
+    ln -s /srv/eyeonwater-yolo /srv/eyeonwater_yolo && \
+    ln -s /srv/eyeonwater-yolo /srv/eyeonwater_yolov8
+
 
 # # Copy the YOLO model directory
-# COPY eyeonwater-yolo/models /srv/eyeonwater-yolo/models
+COPY eyeonwater_yolo/models /srv/eyeonwater_yolo/models
+
+# Copy the YOLO model directory
+# RUN mkdir -p /srv/eyeonwater-yolo/models/
+# COPY models/best.pt /srv/eyeonwater-yolo/models/
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
 
 # Launch deepaas
-# CMD [ "deep-start", "--deepaas" ]
 CMD ["deepaas-run", "--listen-ip", "0.0.0.0", "--listen-port", "5000"]
