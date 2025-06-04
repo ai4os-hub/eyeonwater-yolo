@@ -74,8 +74,8 @@ ENV SHELL=/bin/bash
 # Install user app
 RUN git clone -b $branch https://github.com/ai4os-hub/eye-on-water-yolov8 eyeonwater-yolo && \
     cd eyeonwater-yolo && \
-    # Fix the markupsafe and jinja2 versions first before installing anything else
-    pip3 install --no-cache-dir markupsafe==2.0.1 jinja2==3.1.2 && \
+    # Install markupsafe with version that satisfies werkzeug's requirements
+    pip3 install --no-cache-dir markupsafe>=2.1.1 jinja2==3.1.2 && \
     pip3 install --no-cache-dir -e . && \
     pip3 install --no-cache-dir -r ./requirements.txt && \
     pip3 install --no-cache-dir numpy==1.24.3 && \
@@ -83,13 +83,8 @@ RUN git clone -b $branch https://github.com/ai4os-hub/eye-on-water-yolov8 eyeonw
     ln -s /srv/eyeonwater-yolo /srv/eyeonwater_yolo && \
     ln -s /srv/eyeonwater-yolo /srv/eyeonwater_yolov8
 
-
-# # Copy the YOLO model directory
-COPY eyeonwater_yolo/models /srv/eyeonwater_yolo/models
-
 # Copy the YOLO model directory
-# RUN mkdir -p /srv/eyeonwater-yolo/models/
-# COPY models/best.pt /srv/eyeonwater-yolo/models/
+COPY eyeonwater_yolo/models /srv/eyeonwater_yolo/models
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
